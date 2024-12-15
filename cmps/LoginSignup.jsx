@@ -3,7 +3,7 @@ import { userService } from '../services/user.service.js'
 import { login, signup} from '../store/actions/user.action.js'
 const { useState } = React
 
-export function LoginSignup({ onSetUser }) {
+export function LoginSignup() {
 
     const [isSignup, setIsSignUp] = useState(false)
     const [credentials, setCredentials] = useState(userService.getEmptyCredentials())
@@ -23,12 +23,6 @@ export function LoginSignup({ onSetUser }) {
         isSignup ? _signup(credentials) : _login(credentials)
     }
 
-    /*function login(credentials) {
-        userService.login(credentials)
-            .then(onSetUser)
-            .then(() => { showSuccessMsg('Logged in successfully') })
-            .catch((err) => { showErrorMsg('Oops try again') })
-    }*/
 
     function _login(credentials){
         login(credentials)
@@ -36,12 +30,6 @@ export function LoginSignup({ onSetUser }) {
         .catch((err) => { showErrorMsg('Oops try again') })
     }
 
-    /*function signup(credentials) {
-        userService.signup(credentials)
-            .then(onSetUser)
-            .then(() => { showSuccessMsg('Signed in successfully') })
-            .catch((err) => { showErrorMsg('Oops try again') })
-    }*/
     function _signup(credentials){
         signup(credentials)
         .then(() => { showSuccessMsg('Signed in successfully') })

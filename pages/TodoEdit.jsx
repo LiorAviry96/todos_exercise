@@ -1,25 +1,30 @@
 import { todoService } from "../services/todo.service.js"
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service.js"
 import { loadTodo, saveTodo } from "../store/actions/todo.actions.js"
+import { INCREMENT_BALANCE } from "../store/reducers/user.reducer.js"
+
 const { useState, useEffect } = React
 const { useNavigate, useParams } = ReactRouterDOM
+const { useDispatch } = ReactRedux
 
 export function TodoEdit() {
 
     const [todoToEdit, setTodoToEdit] = useState(todoService.getEmptyTodo())
     const navigate = useNavigate()
     const params = useParams()
+    const dispatch = useDispatch()
 
     useEffect(() => {
         if (params.todoId) loadTodo()
+            console.log('todoToEdit', todoToEdit)
     }, [])
 
-    /*function loadTodo() {
-        todoService.get(params.todoId)
-            .then(setTodoToEdit)
-            .catch(err => console.log('err:', err))
-    }*/
+  
+    function onIncreaseBalance() {
 
+      // setCount(count => count + 1)
+          dispatch({ type: INCREMENT_BALANCE })
+      }
     function handleChange({ target }) {
         const field = target.name
         let value = target.value
@@ -65,6 +70,9 @@ export function TodoEdit() {
                 console.log('Had issues saving todo', err)
                 showErrorMsg('Had issues saving todo')
             })
+        if(todoToEdit.isDone === true){
+            onIncreaseBalance();
+        }
     }
 
 

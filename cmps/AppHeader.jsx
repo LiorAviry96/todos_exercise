@@ -12,12 +12,15 @@ import { logout } from '../store/actions/user.action.js'
 
 export function AppHeader() {
 
-    const dispatch = useDispatch()
+    //const dispatch = useDispatch()
 
     const navigate = useNavigate()
     //const [user, setUser] = useState(userService.getLoggedinUser())
     const user = useSelector(storeState => storeState.userModule.loggedInUser)
+    const balance = useSelector(storeState => storeState.userModule.balance)
+    console.log(balance)
 
+    console.log(user)
     /*function onLogout() {
         userService.logout()
             .then(() => {
@@ -34,11 +37,9 @@ export function AppHeader() {
             showErrorMsg('OOPs try again')
         })
     }
+ 
 
-    function onSetUser(user) {
-        setUser(user)
-        navigate('/')
-    }
+    
     return (
         <header className="app-header full main-layout">
             <section className="header-container">
@@ -46,12 +47,12 @@ export function AppHeader() {
                 {user ? (
                     < section >
 
-                        <Link to={`/user/${user._id}`}>Hello {user.fullname}</Link>
+                        <Link to={`/user/${user._id}`}>Hello {user.fullname} <span>{balance.toLocaleString()}</span> </Link>
                         <button onClick={onLogout}>Logout</button>
                     </ section >
                 ) : (
                     <section>
-                        <LoginSignup onSetUser={onSetUser} />
+                        <LoginSignup />
                     </section>
                 )}
                 <nav className="app-nav">
