@@ -5,6 +5,7 @@ export function TodoPreview({ todo, onToggleTodo, onChangeColor }) {
                 Todo: {todo.txt}
             </h2>
             <h4>Todo Importance: {todo.importance}</h4>
+
             <img src={`../assets/img/${'todo'}.png`} alt="" />
             <input
                 type="color"

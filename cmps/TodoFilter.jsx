@@ -7,10 +7,13 @@ export function TodoFilter({ filterBy, onSetFilterBy }) {
     useEffect(() => {
         // Notify parent
         onSetFilterBy(filterByToEdit)
+        console.log(filterByToEdit)
     }, [filterByToEdit])
 
     function handleChange({ target }) {
         const field = target.name
+        if (!field) return; // Ignore if the name is missing
+
         let value = target.value
 
         switch (target.type) {
@@ -35,7 +38,8 @@ export function TodoFilter({ filterBy, onSetFilterBy }) {
         onSetFilterBy(filterByToEdit)
     }
 
-    const { txt, importance } = filterByToEdit
+    const { txt, importance, status } = filterByToEdit
+    
     return (
         <section className="todo-filter">
             <h2>Filter Todos</h2>
@@ -47,7 +51,15 @@ export function TodoFilter({ filterBy, onSetFilterBy }) {
                 <input value={importance} onChange={handleChange}
                     type="number" placeholder="By Importance" id="importance" name="importance"
                 />
+                 <label htmlFor="status" >Status </label>
+                <select id="status" name="status" value={status} onChange={handleChange}>
 
+                    <option value="" disabled>Status</option>
+                    <option value="1">All</option>
+                    <option value="2">Active</option> 
+                    <option value="3">Done</option>
+                    
+                 </select>
                 <button hidden>Set Filter</button>
             </form>
         </section>

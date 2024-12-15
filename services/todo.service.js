@@ -28,10 +28,22 @@ function query(filterBy = {}) {
             if (filterBy.importance) {
                 todos = todos.filter(todo => todo.importance >= filterBy.importance)
             }
+            if (filterBy.status) {
+                    if(filterBy.status === "2" ){
+                        todos = todos.filter(todo => todo.isDone)
+                    }else if(filterBy.status === "3" ) {
+                        todos = todos.filter(todo => !todo.isDone)
+                    }else{
+                        todos = todos;
+                    }
+            }
+            
 
             return todos
         })
 }
+
+
 
 function get(todoId) {
     return storageService.get(TODO_KEY, todoId)
@@ -62,7 +74,7 @@ function getEmptyTodo(txt = '', importance = 5) {
 }
 
 function getDefaultFilter() {
-    return { txt: '', importance: 0 }
+    return { txt: '', importance: 0, status: '1' }
 }
 
 function getFilterFromSearchParams(searchParams) {
