@@ -30,7 +30,7 @@ export function TodoIndex() {
     useEffect(() => {
        loadTodo()
        .catch(err => console.log('err:', err))
-       
+
     }, [filterBy])
 
     /*function onRemoveTodo(todoId) {
@@ -45,6 +45,8 @@ export function TodoIndex() {
             })
     }*/
     function onRemoveTodo(todoId) {
+        const isConfirmed = window.confirm('Are you sure you want to delete this todo?');
+         if (!isConfirmed) return;
         removeTodoOptimistic(todoId)
             .then(() => showSuccessMsg('Todo removed'))
             .catch(err => showErrorMsg('Cannot remove todo'))
