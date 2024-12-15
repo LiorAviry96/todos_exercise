@@ -4,7 +4,7 @@ import { DataTable } from "../cmps/data-table/DataTable.jsx"
 import { todoService } from "../services/todo.service.js"
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service.js"
 import { loadTodo, removeTodoOptimistic } from "../store/actions/todo.actions.js"
-import { SET_FILTER_BY } from "../store/reducers/todo.reducer.js"
+import { SET_FILTER_BY, UPDATE_TODO } from "../store/reducers/todo.reducer.js"
 
 
 const { useState, useEffect } = React
@@ -52,6 +52,20 @@ export function TodoIndex() {
             .catch(err => showErrorMsg('Cannot remove todo'))
      }
 
+     function onChangeColor(todo, newColor){
+        const updatedTodo = { ...todo, backgroundColor: newColor };
+        console.log('changing color')
+        todoService.save(updatedTodo)
+        .then((savedTodo) => {
+            showSuccessMsg('Background color updated');
+            dispatch({ type: UPDATE_TODO, todo: savedTodo });
+        })
+        .catch(err => {
+            console.error('Error updating color:', err);
+            showErrorMsg('Cannot update background color');
+        });
+
+     }
     function onToggleTodo(todo) {
         const todoToSave = { ...todo, isDone: !todo.isDone }
         todoService.save(todoToSave)
@@ -77,7 +91,7 @@ export function TodoIndex() {
                 <Link to="/todo/edit" className="btn" >Add Todo</Link>
             </div>
             <h2>Todos List</h2>
-            <TodoList todos={todos} onRemoveTodo={onRemoveTodo} onToggleTodo={onToggleTodo} />
+            <TodoList todos={todos} onRemoveTodo={onRemoveTodo} onToggleTodo={onToggleTodo} onChangeColor={onChangeColor} />
             <hr />
             <h2>Todos Table</h2>
             <div style={{ width: '60%', margin: 'auto' }}>
