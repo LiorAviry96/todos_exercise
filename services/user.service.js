@@ -8,6 +8,8 @@ export const userService = {
     signup,
     getById,
     query,
+    getEmptyUser,
+    saveUserPrefs,
     getEmptyCredentials
 }
 const STORAGE_KEY_LOGGEDIN = 'user'
@@ -47,6 +49,7 @@ function getLoggedinUser() {
     return JSON.parse(sessionStorage.getItem(STORAGE_KEY_LOGGEDIN))
 }
 
+
 function _setLoggedinUser(user) {
     const userToSave = { _id: user._id, fullname: user.fullname, balance: user.balance }
     sessionStorage.setItem(STORAGE_KEY_LOGGEDIN, JSON.stringify(userToSave))
@@ -61,6 +64,24 @@ function getEmptyCredentials() {
     }
 }
 
+function getEmptyUser() {
+    return {
+        fullname: '',
+        prefs: { color: 'green', bgColor: 'white' },
+        balance: 0,
+    };
+}
+
+function saveUserPrefs(userId, prefs) {
+    return getById(userId).then((user) => {
+        user.prefs = { ...user.prefs, ...prefs };
+        return storageService.put(STORAGE_KEY, user).then((updatedUser) => {
+            _setLoggedinUser(updatedUser); // Update the session storage
+            return updatedUser;
+        });
+
+    });
+}
 // signup({username: 'muki', password: 'muki1', fullname: 'Muki Ja'})
 // login({username: 'muki', password: 'muki1'})
 

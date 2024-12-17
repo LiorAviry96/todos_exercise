@@ -18,18 +18,7 @@ export function AppHeader() {
     //const [user, setUser] = useState(userService.getLoggedinUser())
     const user = useSelector(storeState => storeState.userModule.loggedInUser)
     const balance = useSelector(storeState => storeState.userModule.balance)
-    console.log(balance)
-
-    console.log(user)
-    /*function onLogout() {
-        userService.logout()
-            .then(() => {
-                onSetUser(null)
-            })
-            .catch((err) => {
-                showErrorMsg('OOPs try again')
-            })
-    }*/
+ 
 
     function onLogout() {
         logout()
@@ -60,6 +49,8 @@ export function AppHeader() {
                     <NavLink to="/about" >About</NavLink>
                     <NavLink to="/todo" >Todos</NavLink>
                     <NavLink to="/dashboard" >Dashboard</NavLink>
+                    <NavLink to="/:userId" >User Prefernce</NavLink>
+
                 </nav>
             </section>
             <UserMsg />
