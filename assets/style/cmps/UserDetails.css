@@ -1,0 +1,18 @@
+.user-pref-edit{
+    font-family: 'Edu VIC WA NT Beginner', cursive;
+    margin-top: 20px;
+
+}
+.user-pref-edit input{
+    font-family: 'Edu VIC WA NT Beginner', cursive;
+    margin-left: 10px;
+    margin-right: 10px;
+    font-size: 20px;
+
+}
+
+
+.user-activities li{
+    margin-top: 10px !important;
+    font-weight: 500px;
+}
