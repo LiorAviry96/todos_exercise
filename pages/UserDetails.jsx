@@ -8,6 +8,7 @@ export function UserDetails() {
 
     const dispatch = useDispatch();
     const user = useSelector((storeState) => storeState.userModule.loggedInUser);
+    const activities = useSelector((storeState) => storeState.userModule.activities);
 
     const [userToEdit, setUserToEdit] = useState(user);
 
@@ -65,6 +66,16 @@ export function UserDetails() {
 
                 <button>Save</button>
             </form>
+            <section className="user-activities">
+                <h2>User Activities</h2>
+                <ul>
+                    {activities.map((activity, idx) => (
+                        <li key={idx}>
+                            {new Date(activity.at).toLocaleString()}: {activity.txt}
+                        </li>
+                    ))}
+                </ul>
+            </section>
         </section>
     )
 }

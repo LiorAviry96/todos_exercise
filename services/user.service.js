@@ -1,6 +1,5 @@
 import { storageService } from "./async-storage.service.js"
 
-
 export const userService = {
     getLoggedinUser,
     login,

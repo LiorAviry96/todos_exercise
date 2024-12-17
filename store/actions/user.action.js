@@ -36,18 +36,18 @@ export function logout() {
         })
 }
 
-
 export function saveUserPrefs(userId, prefs) {
     return userService.saveUserPrefs(userId, prefs)
         .then((updatedUser) => {
             store.dispatch({ type: SET_USER_PREF, prefs: updatedUser.prefs });
+            store.dispatch({ type: ADD_USER_ACTIVITY, txt });
         })
         .catch((err) => {
             console.log('user actions -> Cannot save preferences', err);
             throw err;
         });
 }
+export function addUserActivity(txt) {
+    return store.dispatch({ type: ADD_USER_ACTIVITY, txt });
 
-
-
-
+}
