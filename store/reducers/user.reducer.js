@@ -32,14 +32,22 @@ export function userReducer(state = initialState, cmd = {}) {
                ...state,
                isLoading: cmd.isLoading
              }
-        case SET_USER_PREF:
-              const updatedPrefs = { ...state.loggedInUser.prefs, ...cmd.prefs }; // Merge preferences
-            return {
-                ...state,
-                loggedInUser: { ...state.loggedInUser, prefs: updatedPrefs },
-            };
+             case SET_USER_PREF:
+                const updatedPrefs = { ...state.loggedInUser.prefs, ...cmd.prefs }; // Merge preferences
+                return {
+                    ...state,
+                    loggedInUser: { ...state.loggedInUser, prefs: updatedPrefs },
+                };
       
-                
+        case ADD_USER_ACTIVITY:
+            const newActivity = {
+            txt: cmd.txt,
+            at: Date.now(),
+               };
+         return {
+            ...state,
+             activities: [newActivity, ...state.activities], // Prepend to keep the latest activity at the top
+    };
         default:
             return state
     }

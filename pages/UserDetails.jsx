@@ -1,9 +1,8 @@
 import { userService } from "../services/user.service.js"
 import { saveUserPrefs } from "../store/actions/user.action.js";
 
-
 const { useSelector, useDispatch } = ReactRedux
-const { useState, useEffect} = React
+const { useState} = React
 export function UserDetails() {
 
     const dispatch = useDispatch();
@@ -23,7 +22,7 @@ export function UserDetails() {
     }
 
     function onSavePref(ev){
-        console.log(userToEdit)
+        console.log('userToEdit - start saving', userToEdit)
         ev.preventDefault();
         saveUserPrefs(user._id, {
             color: userToEdit.color,

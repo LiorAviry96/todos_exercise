@@ -1,5 +1,5 @@
 import { userService } from "../../services/user.service.js"
-import { SET_USER, SET_USER_PREF } from "../reducers/user.reducer.js"
+import { SET_USER, SET_USER_PREF, ADD_USER_ACTIVITY } from "../reducers/user.reducer.js"
 import { store } from "../store.js"
 
 
@@ -37,16 +37,18 @@ export function logout() {
 }
 
 export function saveUserPrefs(userId, prefs) {
-    return userService.saveUserPrefs(userId, prefs)
+    return userService.onSaveUserPrefs(userId, prefs)
         .then((updatedUser) => {
+            console.log('updatedUser - finishing saving', updatedUser);
             store.dispatch({ type: SET_USER_PREF, prefs: updatedUser.prefs });
-            store.dispatch({ type: ADD_USER_ACTIVITY, txt });
+            sessionStorage.setItem('user', JSON.stringify(updatedUser)); // Update session storage with the new user prefs
         })
         .catch((err) => {
-            console.log('user actions -> Cannot save preferences', err);
+            console.error('user actions -> Cannot save preferences', err);
             throw err;
         });
 }
+
 export function addUserActivity(txt) {
     return store.dispatch({ type: ADD_USER_ACTIVITY, txt });
 
