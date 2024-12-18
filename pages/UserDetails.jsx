@@ -11,23 +11,27 @@ export function UserDetails() {
     const isLoading = useSelector((storeState) => storeState.userModule.isLoading);
 
     const [userToEdit, setUserToEdit] = useState(user);
+    //console.log('userToEdit', userToEdit)
 
     
     function onChangPref({ target }){
         const { name, value } = target; 
         setUserToEdit((prevUser) => ({
             ...prevUser,
-            [name]: value, 
+            prefs: {
+                ...prevUser.prefs,
+                [name]: value, // Update only the relevant key in prefs
+            },
         }));
     }
 
     function onSavePref(ev){
+        console.log('user before changes', user)
+
         console.log('userToEdit - start saving', userToEdit)
         ev.preventDefault();
-        saveUserPrefs(user._id, {
-            color: userToEdit.color,
-            bgColor: userToEdit.bgColor,
-        });
+        saveUserPrefs(userToEdit._id, userToEdit.prefs)
+        console.log('user after change', user)
         alert('Preferences saved!');
         
     }
@@ -48,7 +52,7 @@ export function UserDetails() {
             <label htmlFor="color">Color:</label>
             <input
               type="color"
-              value={userToEdit.color || ""}
+              value={userToEdit.prefs.color || ""}
               onChange={onChangPref}
               title="Color"
               name="color"
@@ -57,7 +61,7 @@ export function UserDetails() {
             <label htmlFor="bgColor">Background Color:</label>
             <input
               type="color"
-              value={userToEdit.bgColor || ""}
+              value={userToEdit.prefs.bgColor || ""}
               onChange={onChangPref}
               title="Background Color"
               name="bgColor"

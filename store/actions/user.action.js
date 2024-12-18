@@ -37,16 +37,19 @@ export function logout() {
 }
 
 export function saveUserPrefs(userId, prefs) {
+    console.log('updatedUser - before sending to user service', prefs);
     return userService.onSaveUserPrefs(userId, prefs)
         .then((updatedUser) => {
             console.log('updatedUser - finishing saving', updatedUser);
             store.dispatch({ type: SET_USER_PREF, prefs: updatedUser.prefs });
-            sessionStorage.setItem('user', JSON.stringify(updatedUser)); // Update session storage with the new user prefs
+            sessionStorage.setItem('user', JSON.stringify(updatedUser));
+            console.log(sessionStorage) // Update session storage with the new user prefs
         })
         .catch((err) => {
             console.error('user actions -> Cannot save preferences', err);
             throw err;
         });
+       
 }
 
 export function addUserActivity(txt) {

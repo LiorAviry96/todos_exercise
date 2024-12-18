@@ -54,8 +54,7 @@ function _setLoggedinUser(user) {
          _id: user._id,
          fullname: user.fullname, 
          balance: user.balance,
-         color: user.prefs.color,
-         bgColor: user.prefs.bgColor,
+         prefs: { ...user.prefs },
         }
     sessionStorage.setItem(STORAGE_KEY_LOGGEDIN, JSON.stringify(userToSave))
     return userToSave
