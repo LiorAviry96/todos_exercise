@@ -6,8 +6,8 @@ html {
 }
 
 body {
-  margin: 0;
-  color: var(--gray3);
+  font-family: 'Roboto', sans-serif;
+  color: #333;
 }
 
 h1,
@@ -16,8 +16,8 @@ h3,
 h4,
 h5,
 h6 {
-  margin: .5em 0 .5em;
-  font-family: 'Edu VIC WA NT Beginner', cursive;
+  font-weight: bold;
+  color: #444;
 }
 
 p {

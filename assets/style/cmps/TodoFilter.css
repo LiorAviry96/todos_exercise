@@ -1,6 +1,35 @@
 .todo-filter {
-    background-color: var(--clr2bg);
+    background: var(--card-bg);
     padding: 1em;
-    margin: 1em 0;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1em;
 }
 
+.todo-filter form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+    align-items: center;
+}
+
+.todo-filter input, 
+.todo-filter select {
+    padding: 0.5em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.todo-filter button {
+    background: var(--primary);
+    color: var(--background);
+    padding: 0.5em 1em;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.todo-filter button:hover {
+    background: var(--secondary);
+}

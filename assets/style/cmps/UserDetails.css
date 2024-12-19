@@ -1,18 +1,106 @@
-.user-pref-edit{
-    font-family: 'Edu VIC WA NT Beginner', cursive;
+/* Base Styles */
+.user-pref-edit {
+    font-family: 'Roboto', sans-serif;
     margin-top: 20px;
-
-}
-.user-pref-edit input{
-    font-family: 'Edu VIC WA NT Beginner', cursive;
-    margin-left: 10px;
-    margin-right: 10px;
-    font-size: 20px;
-
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    margin: 20px auto;
 }
 
+/* Form Input Styling */
+.user-pref-edit input {
+    font-family: 'Roboto', sans-serif;
+    margin: 10px 0;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    width: 100%;
+}
 
-.user-activities li{
-    margin-top: 10px !important;
-    font-weight: 500px;
+.user-pref-edit input:focus {
+    outline: none;
+    border-color: var(--secondary);
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Button Styling */
+.user-pref-edit button {
+    font-family: 'Roboto', sans-serif;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.user-pref-edit button:hover {
+    background-color: #8a5899;
+}
+
+/* Activities Section */
+.user-activities {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.user-activities h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.user-activities ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.user-activities li {
+    margin-top: 10px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.user-activities li:hover {
+    background-color: #e9ecef;
+    transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .user-pref-edit {
+        padding: 15px;
+        font-size: 14px;
+    }
+
+    .user-pref-edit input {
+        font-size: 14px;
+    }
+
+    .user-pref-edit button {
+        font-size: 14px;
+    }
+
+    .user-activities h2 {
+        font-size: 20px;
+    }
+
+    .user-activities li {
+        font-size: 14px;
+    }
 }
