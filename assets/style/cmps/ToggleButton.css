@@ -5,7 +5,7 @@
 }
 
 .toggle-btn input:focus + div {
-  box-shadow: 0 0 5px #007BFF;
+  box-shadow: 0 0 5px #681a82;
 }
 
 .toggle-btn:hover div {

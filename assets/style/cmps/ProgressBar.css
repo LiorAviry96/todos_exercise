@@ -1,0 +1,25 @@
+.progress-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0; /* No need for top margin */
+}
+
+.progress-bar span {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.bar {
+    width: 10px;
+    height: 20px;
+    border: 1px solid #ccc;
+    background-color: #f0f0f0;
+    transition: background-color 0.3s ease;
+}
+
+.bar.light {
+    background-color: #4c2dbc;
+    border-color: #4c2dbc;
+}

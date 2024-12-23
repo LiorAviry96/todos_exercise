@@ -4,6 +4,7 @@
     gap: 20px;
     padding: 1em;
     background: var(--background);
+    list-style: none;
 }
 
 .todo-list li {
@@ -19,11 +20,7 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-.todo-preview img {
-    max-width: 100%;
-    border-radius: 5px;
-    margin: 0.5em 0;
-}
+
 
 button {
     margin: 0.5em;

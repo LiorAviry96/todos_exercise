@@ -3,7 +3,7 @@ import { TodoList } from "../cmps/TodoList.jsx"
 import { DataTable } from "../cmps/data-table/DataTable.jsx"
 import { todoService } from "../services/todo.service.js"
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service.js"
-import { loadTodo, removeTodoOptimistic } from "../store/actions/todo.actions.js"
+import { loadTodos, removeTodoOptimistic } from "../store/actions/todo.actions.js"
 import { SET_FILTER_BY, UPDATE_TODO } from "../store/reducers/todo.reducer.js"
 
 
@@ -28,7 +28,7 @@ export function TodoIndex() {
   const dispatch = useDispatch()
 
     useEffect(() => {
-       loadTodo()
+       loadTodos()
        .catch(err => console.log('err:', err))
 
     }, [filterBy])

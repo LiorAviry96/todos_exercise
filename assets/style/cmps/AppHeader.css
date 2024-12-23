@@ -18,6 +18,17 @@
     color: white;
     font-size: 2rem;
 }
+.user-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem; /* Space between progress bar and user info */
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
 
 .app-nav a{
     color: var(--background);

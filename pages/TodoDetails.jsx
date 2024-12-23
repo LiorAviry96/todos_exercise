@@ -9,15 +9,19 @@ export function TodoDetails() {
     const [todo, setTodo] = useState(null)
     //const params = useParams()
     const navigate = useNavigate()
-    const { todoId } = useParams()
-
+    const params = useParams()
 
     useEffect(() => {
-        if (todoId){
-            loadTodo()
-            .catch(err => console.log('err:', err))
-        } 
-    }, [todoId])
+        if (params.todoId) {
+            loadTodo(params.todoId).then(todo => setTodo(todo))
+            .catch(err => {
+                console.log('Had issues in todo edit', err)
+                navigate('/todo')
+            })
+            
+        }
+            
+    }, [params.todoId])
 
 
     /*function loadTodo() {
@@ -35,7 +39,7 @@ export function TodoDetails() {
         navigate('/todo')
         // navigate(-1)
     }
-
+    console.log(todo)
     if (!todo) return <div>Loading...</div>
     return (
         <section className="todo-details">

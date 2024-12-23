@@ -3,21 +3,48 @@ import { ADD_TODO, REMOVE_TODO, SET_TODOS, UNDO_TODOS, UPDATE_TODO, SET_IS_LOADI
 import { store } from "../store.js"
 
 
-export function loadTodo(){
-    const filterBy = store.getState().todoModule.filterBy
-    store.dispatch({ type: SET_IS_LOADING, isLoading: true })
+export function loadTodos() {
+    const filterBy = store.getState().todoModule.filterBy;
+    store.dispatch({ type: SET_IS_LOADING, isLoading: true });
+    
     return todoService.query(filterBy)
         .then(todos => {
-            store.dispatch({ type: SET_TODOS, todos })
+            // Dispatch the loaded todos
+            store.dispatch({ type: SET_TODOS, todos });
+            console.log('Todos:', todos); // Log todos here
+            return todos; // Ensure the todos are returned for chaining if needed
         })
         .catch(err => {
-            console.log('todo action -> Cannot load todos', err)
-            throw err
+            console.error('todo action -> Cannot load todos', err);
+            throw err;
         })
         .finally(() => {
-            store.dispatch({ type: SET_IS_LOADING, isLoading: false })
-        })
+            // Always turn off the loading state
+            store.dispatch({ type: SET_IS_LOADING, isLoading: false });
+        });
 }
+
+export function loadTodo(todoId) {
+    store.dispatch({ type: SET_IS_LOADING, isLoading: true });
+
+    return todoService.get(todoId) // Fetch a specific todo by ID
+        .then(todo => {
+            // Dispatch the loaded todo (if your state supports a single todo structure)
+            store.dispatch({ type: SET_TODOS, todos: [todo] });
+            console.log('Todo Id:', todoId); 
+            console.log('Todo:', todo); // Log the specific todo
+            return todo; // Return the todo for further use if needed
+        })
+        .catch(err => {
+            console.error('todo action -> Cannot load todo', err);
+            throw err;
+        })
+        .finally(() => {
+            store.dispatch({ type: SET_IS_LOADING, isLoading: false });
+        });
+}
+
+
 
 export function removeTodo(todoId) {
 

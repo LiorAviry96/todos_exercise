@@ -10,16 +10,23 @@ const { useDispatch } = ReactRedux
 export function TodoEdit() {
 
     const [todoToEdit, setTodoToEdit] = useState(todoService.getEmptyTodo())
+    const [isLoadingTodo, setIsLoadingTodo] = useState(false)
     const navigate = useNavigate()
     const params = useParams()
     const dispatch = useDispatch()
 
     useEffect(() => {
-        if (params.todoId) loadTodo()
-            console.log('todoToEdit', todoToEdit)
-    }, [])
+        if (params.todoId) {
+            loadTodo(params.todoId).then(todo => setTodoToEdit(todo))
+            .catch(err => {
+                console.log('Had issues in todo edit', err)
+                navigate('/todo')
+            })
+            .finally(() => setIsLoadingTodo(false))
+        }
+            
+    }, [params.todoId])
 
-  
     function onIncreaseBalance() {
 
       // setCount(count => count + 1)
