@@ -7,9 +7,6 @@ export function loadTodos(filterSort) {
     store.dispatch({ type: SET_IS_LOADING, isLoading: true })
     return todoService.query(filterSort)
         .then(({ todos, doneTodosPercent }) => {
-            //console.log('todos final ',todos)
-            //console.log(filterSort)
-
             store.dispatch({
                 type: SET_TODOS,
                 todos
@@ -29,14 +26,12 @@ export function loadTodos(filterSort) {
 export function loadTodo(todoId) {
     store.dispatch({ type: SET_IS_LOADING, isLoading: true });
 
-    return todoService.get(todoId) // Fetch a specific todo by ID
+    return todoService.get(todoId) 
         .then(todo => {
-            // Dispatch the loaded todo (if your state supports a single todo structure)
             store.dispatch({ type: SET_TODOS, todos: [todo] });
             _setTodosData(doneTodosPercent)
-            //console.log('Todo Id:', todoId); 
-            //console.log('Todo:', todo); // Log the specific todo
-            return todo; // Return the todo for further use if needed
+            
+            return todo; 
         })
         .catch(err => {
             console.error('todo action -> Cannot load todo', err);
@@ -61,21 +56,6 @@ export function removeTodo(todoId) {
         })
 }
 
-/*export function removeTodoOptimistic(todoId) {
-    return todoService.remove(todoId)
-    .then(({ doneTodosPercent }) => {
-        store.dispatch({
-            type: REMOVE_TODO,
-            todoId
-        })
-        _setTodosData(doneTodosPercent)
-    })
-    .then(() => addUserActivity('Removed the Todo: ' + todoId))
-    .catch(err => {
-        console.error('Cannot remove todo:', err)
-        throw err
-    })
-}*/
 
 export function saveTodo(todo) {
     const type = (todo._id) ? UPDATE_TODO : ADD_TODO

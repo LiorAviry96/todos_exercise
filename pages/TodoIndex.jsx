@@ -27,26 +27,12 @@ export function TodoIndex() {
   const dispatch = useDispatch()
 
     useEffect(() => {
-    //setSearchParams(filterBy)
-    //console.log('Loading todos with filterBy:', filterBy);
         loadTodos(filterBy)
-
-      // loadTodos(filterBy)
        .catch(err => console.log('err:', err))
 
     }, [filterBy])
 
-    /*function onRemoveTodo(todoId) {
-        todoService.remove(todoId)
-            .then(() => {
-                setTodos(prevTodos => prevTodos.filter(todo => todo._id !== todoId))
-                showSuccessMsg(`Todo removed`)
-            })
-            .catch(err => {
-                console.log('err:', err)
-                showErrorMsg('Cannot remove todo ' + todoId)
-            })
-    }*/
+  
     function onRemoveTodo(todoId) {
         const isConfirmed = window.confirm('Are you sure you want to delete this todo?');
          if (!isConfirmed) return;
@@ -54,21 +40,6 @@ export function TodoIndex() {
             .then(() => showSuccessMsg('Todo removed'))
             .catch(err => showErrorMsg('Cannot remove todo'))
      }
-
-     /*function onChangeColor(todo, newColor){
-        const updatedTodo = { ...todo, backgroundColor: newColor };
-        console.log('changing color')
-        todoService.save(updatedTodo)
-        .then((savedTodo) => {
-            showSuccessMsg('Background color updated');
-            dispatch({ type: UPDATE_TODO, todo: savedTodo });
-        })
-        .catch(err => {
-            console.error('Error updating color:', err);
-            showErrorMsg('Cannot update background color');
-        });
-
-     }*/
 
         
     function onToggleTodo(todo) {

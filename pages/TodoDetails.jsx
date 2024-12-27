@@ -25,20 +25,9 @@ export function TodoDetails() {
             })
     }
 
-    /*function loadTodo() {
-        todoService.get(todoId)
-            .then(setTodo)
-            .catch(err => {
-                console.error('err:', err)
-                showErrorMsg('Cannot load todo')
-                navigate('/todo')
-            })
-    }*/
 
     function onBack() {
-        // If nothing to do here, better use a Link
         navigate('/todo')
-        // navigate(-1)
     }
     console.log(todo)
     if (!todo) return <div>Loading...</div>

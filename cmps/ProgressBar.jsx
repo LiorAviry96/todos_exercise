@@ -6,7 +6,7 @@ const { useSelector, useDispatch } = ReactRedux
 export function ProgressBar() {
 
 
-    const [numberOfDone, setNumberOfDone] = useState(0); // Initialize state to 0
+    const [numberOfDone, setNumberOfDone] = useState(0); 
     const todos = useSelector(storeState => storeState.todoModule.todos)
     const dispatch = useDispatch();
     const style = useSelector(state => state.userModule.loggedInUser.pref)
@@ -27,7 +27,7 @@ export function ProgressBar() {
     function onLoadTodos() {
         loadTodos();
     }
-    function calculateProgress() { // ths function calculate the avrg and sets it in local state
+    function calculateProgress() { 
         if (!todos || !todos.length) return;
         const doneCount = todos.filter(todo => todo.isDone).length;
         const progress = Math.floor((doneCount / todos.length) * 10);
