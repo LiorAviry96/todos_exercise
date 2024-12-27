@@ -7,9 +7,9 @@ export const userService = {
     signup,
     getById,
     query,
-    getEmptyUser,
     onSaveUserPrefs,
-    getEmptyCredentials
+    getEmptyCredentials,
+    updateBalance
 }
 const STORAGE_KEY_LOGGEDIN = 'user'
 const STORAGE_KEY = 'userDB'
@@ -54,7 +54,8 @@ function _setLoggedinUser(user) {
          _id: user._id,
          fullname: user.fullname, 
          balance: user.balance,
-         prefs: { ...user.prefs },
+         pref: user.pref,
+        activities: user.activities 
         }
     sessionStorage.setItem(STORAGE_KEY_LOGGEDIN, JSON.stringify(userToSave))
     return userToSave
@@ -68,25 +69,107 @@ function getEmptyCredentials() {
     }
 }
 
-function getEmptyUser() {
+/*function getEmptyUser() {
     return {
         fullname: '',
         prefs: { color: 'green', bgColor: 'white' },
         balance: 0,
     };
+}*/
+
+function onSaveUserPrefs(userToUpdate) {
+    const loggedinUserId = getLoggedinUser()._id
+    return getById(loggedinUserId)
+        .then(user => {
+            user = { ...user, ...userToUpdate }
+            return storageService.put(STORAGE_KEY, user)
+                .then((savedUser) => {
+                    _setLoggedinUser(savedUser)
+                    return savedUser
+                })
+        })
 }
 
-function onSaveUserPrefs(userId, prefs) {
-    return getById(userId).then((user) => {
-        user.prefs = { ...user.prefs, ...prefs };
-        return storageService.put(STORAGE_KEY, user).then((updatedUser) => {
-            _setLoggedinUser(updatedUser); // Update the session storage
-            console.log(updatedUser)
-            return updatedUser;
-        });
-
-    });
+function updateBalance(diff) {
+    // return
+    const loggedinUser = getLoggedinUser()
+    if (!loggedinUser) return
+    return getById(loggedinUser._id)
+        .then(user => {
+            user.balance += diff
+            return storageService.put(STORAGE_KEY, user)
+                .then((user) => {
+                    _setLoggedinUser(user)
+                    return user.balance
+                })
+        })
 }
+
+function addActivity(txt) {
+    const activity = {
+        txt,
+        at: Date.now()
+    }
+    
+    const loggedinUser = getLoggedinUser()
+    if (!loggedinUser) return Promise.reject('No loggedin user')
+    return getById(loggedinUser._id)
+        .then(user => {
+            if (!user.activities) user.activities = []
+            user.activities.unshift(activity)
+            return user
+        })
+        .then(userToUpdate => {
+            return storageService.put(STORAGE_KEY, userToUpdate)
+                .then((savedUser) => {
+                    _setLoggedinUser(savedUser)
+                    return savedUser
+                })
+        })
+}function addActivity(txt) {
+    const activity = {
+        txt,
+        at: Date.now()
+    }
+    
+    const loggedinUser = getLoggedinUser()
+    if (!loggedinUser) return Promise.reject('No loggedin user')
+    return getById(loggedinUser._id)
+        .then(user => {
+            if (!user.activities) user.activities = []
+            user.activities.unshift(activity)
+            return user
+        })
+        .then(userToUpdate => {
+            return storageService.put(STORAGE_KEY, userToUpdate)
+                .then((savedUser) => {
+                    _setLoggedinUser(savedUser)
+                    return savedUser
+                })
+        })
+}function addActivity(txt) {
+    const activity = {
+        txt,
+        at: Date.now()
+    }
+    
+    const loggedinUser = getLoggedinUser()
+    if (!loggedinUser) return Promise.reject('No loggedin user')
+    return getById(loggedinUser._id)
+        .then(user => {
+            if (!user.activities) user.activities = []
+            user.activities.unshift(activity)
+            return user
+        })
+        .then(userToUpdate => {
+            return storageService.put(STORAGE_KEY, userToUpdate)
+                .then((savedUser) => {
+                    _setLoggedinUser(savedUser)
+                    return savedUser
+                })
+        })
+}
+
 // signup({username: 'muki', password: 'muki1', fullname: 'Muki Ja'})
 // login({username: 'muki', password: 'muki1'})
 
@@ -99,3 +182,5 @@ function onSaveUserPrefs(userId, prefs) {
 //     createdAt: 1711490430252,
 //     updatedAt: 1711490430999
 // }
+
+

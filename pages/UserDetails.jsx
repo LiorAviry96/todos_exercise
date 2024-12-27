@@ -1,8 +1,9 @@
 import { userService } from "../services/user.service.js"
-import { saveUserPrefs } from "../store/actions/user.action.js";
+import { updateUser } from "../store/actions/user.action.js";
 
 const { useSelector, useDispatch } = ReactRedux
 const { useState} = React
+
 export function UserDetails() {
 
     const dispatch = useDispatch();
@@ -15,23 +16,36 @@ export function UserDetails() {
 
     
     function onChangPref({ target }){
-        const { name, value } = target; 
-        setUserToEdit((prevUser) => ({
+        const field = target.name
+        let value = target.value
+
+        switch (target.type) {
+            case 'number':
+            case 'range':
+                value = +value || ''
+                break
+
+            case 'checkbox':
+                value = target.checked
+                break
+        }        setUserToEdit((prevUser) => ({
             ...prevUser,
             prefs: {
-                ...prevUser.prefs,
-                [name]: value, // Update only the relevant key in prefs
+                ...prevUser.pref,
+                [field]: value, // Update only the relevant key in prefs
             },
         }));
     }
 
     function onSavePref(ev){
-        console.log('user before changes', user)
-
-        console.log('userToEdit - start saving', userToEdit)
         ev.preventDefault();
-        saveUserPrefs(userToEdit._id, userToEdit.prefs)
-        console.log('user after change', user)
+        const userToUpdate = {
+            fullname: userToEdit.fullname,
+            pref: { color: userToEdit.color, bgColor: userToEdit.bgColor }
+        }
+       
+        updateUser(userToUpdate)
+        //console.log('user after change', user)
         alert('Preferences saved!');
         
     }
@@ -52,7 +66,7 @@ export function UserDetails() {
             <label htmlFor="color">Color:</label>
             <input
               type="color"
-              value={userToEdit.prefs.color || ""}
+              value={userToEdit.color || ""}
               onChange={onChangPref}
               title="Color"
               name="color"
@@ -61,7 +75,7 @@ export function UserDetails() {
             <label htmlFor="bgColor">Background Color:</label>
             <input
               type="color"
-              value={userToEdit.prefs.bgColor || ""}
+              value={userToEdit.bgColor || ""}
               onChange={onChangPref}
               title="Background Color"
               name="bgColor"

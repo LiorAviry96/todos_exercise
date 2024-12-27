@@ -1,6 +1,5 @@
 import { todoService } from "../services/todo.service.js"
 import { showErrorMsg } from "../services/event-bus.service.js"
-import { loadTodo } from "../store/actions/todo.actions.js"
 const { useState, useEffect } = React
 const { useParams, useNavigate, Link } = ReactRouterDOM
 
@@ -12,17 +11,19 @@ export function TodoDetails() {
     const params = useParams()
 
     useEffect(() => {
-        if (params.todoId) {
-            loadTodo(params.todoId).then(todo => setTodo(todo))
-            .catch(err => {
-                console.log('Had issues in todo edit', err)
-                navigate('/todo')
-            })
-            
-        }
-            
+        loadTodo()
     }, [params.todoId])
 
+
+    function loadTodo() {
+        todoService.get(params.todoId)
+            .then(setTodo)
+            .catch(err => {
+                console.error('err:', err)
+                showErrorMsg('Cannot load todo')
+                navigate('/todo')
+            })
+    }
 
     /*function loadTodo() {
         todoService.get(todoId)

@@ -7,12 +7,16 @@ export const UPDATE_TODO = 'UPDATE_TODO'
 export const SET_FILTER_BY = 'SET_FILTER_BY'
 export const SET_IS_LOADING = 'SET_IS_LOADING'
 export const UNDO_TODOS = 'UNDO_TODOS'
+export const SET_DONE_TODOS_PERCENT = 'SET_DONE_TODOS_PERCENT'
+
+
 
 
 const initialState = {
     todos: [],
     filterBy: todoService.getDefaultFilter(),
     isLoading: false,
+    doneTodosPercent: 0,
     lastTodos: [],
 }
 
@@ -40,6 +44,9 @@ export function todoReducer(state = initialState, cmd = {}) {
                 ...state,
                 todos: state.todos.map(todo => todo._id === cmd.todo._id ? cmd.todo : todo)
             }
+            case SET_DONE_TODOS_PERCENT:
+                return { ...state, doneTodosPercent: cmd.doneTodosPercent }
+            
         case SET_FILTER_BY:
             return {
                 ...state,

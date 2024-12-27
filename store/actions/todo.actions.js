@@ -1,27 +1,29 @@
 import { todoService } from "../../services/todo.service.js"
-import { ADD_TODO, REMOVE_TODO, SET_TODOS, UNDO_TODOS, UPDATE_TODO, SET_IS_LOADING } from "../reducers/todo.reducer.js"
+import { ADD_TODO,SET_DONE_TODOS_PERCENT, REMOVE_TODO, SET_TODOS, UNDO_TODOS, UPDATE_TODO, SET_IS_LOADING } from "../reducers/todo.reducer.js"
 import { store } from "../store.js"
+import { addActivity } from "./user.action.js";
 
+export function loadTodos(filterSort) {
+    store.dispatch({ type: SET_IS_LOADING, isLoading: true })
+    return todoService.query(filterSort)
+        .then(({ todos, doneTodosPercent }) => {
+            //console.log('todos final ',todos)
+            //console.log(filterSort)
 
-export function loadTodos() {
-    const filterBy = store.getState().todoModule.filterBy;
-    store.dispatch({ type: SET_IS_LOADING, isLoading: true });
-    
-    return todoService.query(filterBy)
-        .then(todos => {
-            // Dispatch the loaded todos
-            store.dispatch({ type: SET_TODOS, todos });
-            console.log('Todos:', todos); // Log todos here
-            return todos; // Ensure the todos are returned for chaining if needed
+            store.dispatch({
+                type: SET_TODOS,
+                todos
+            })
+            _setTodosData(doneTodosPercent)
+            return todos
         })
         .catch(err => {
-            console.error('todo action -> Cannot load todos', err);
-            throw err;
+            console.error('Cannot load todos:', err)
+            throw err
         })
         .finally(() => {
-            // Always turn off the loading state
-            store.dispatch({ type: SET_IS_LOADING, isLoading: false });
-        });
+            store.dispatch({ type: SET_IS_LOADING, isLoading: false })
+        })
 }
 
 export function loadTodo(todoId) {
@@ -31,8 +33,9 @@ export function loadTodo(todoId) {
         .then(todo => {
             // Dispatch the loaded todo (if your state supports a single todo structure)
             store.dispatch({ type: SET_TODOS, todos: [todo] });
-            console.log('Todo Id:', todoId); 
-            console.log('Todo:', todo); // Log the specific todo
+            _setTodosData(doneTodosPercent)
+            //console.log('Todo Id:', todoId); 
+            //console.log('Todo:', todo); // Log the specific todo
             return todo; // Return the todo for further use if needed
         })
         .catch(err => {
@@ -58,25 +61,50 @@ export function removeTodo(todoId) {
         })
 }
 
-export function removeTodoOptimistic(todoId) {
-    store.dispatch({ type: REMOVE_TODO, todoId })
+/*export function removeTodoOptimistic(todoId) {
     return todoService.remove(todoId)
+    .then(({ doneTodosPercent }) => {
+        store.dispatch({
+            type: REMOVE_TODO,
+            todoId
+        })
+        _setTodosData(doneTodosPercent)
+    })
+    .then(() => addUserActivity('Removed the Todo: ' + todoId))
+    .catch(err => {
+        console.error('Cannot remove todo:', err)
+        throw err
+    })
+}*/
+
+export function saveTodo(todo) {
+    const type = (todo._id) ? UPDATE_TODO : ADD_TODO
+    console.log(type)
+
+    console.log(todo)
+    return todoService.save(todo)
+        .then(( { savedTodo, doneTodosPercent } ) => {
+            store.dispatch({
+                type,
+                todo: savedTodo
+            })
+            _setTodosData(doneTodosPercent)
+            console.log('got in')
+            return savedTodo
+        })
+        .then(res => {
+            const actionName = (todo._id) ? 'Updated' : 'Added'
+            return addActivity(`${actionName} a Todo: ` + todo.txt).then(() => res)
+        })
         .catch(err => {
-            store.dispatch({ type: UNDO_TODOS })
-            console.log('todo action -> Cannot remove todo', err)
+            console.error('Cannot save todo:', err)
             throw err
         })
 }
 
-export function saveTodo(todo) {
-    const type = todo._id ? UPDATE_TODO : ADD_TODO
-    return todoService.save(todo)
-        .then((savedTodo) => {
-            store.dispatch({ type, todo: savedTodo })
-            return savedTodo
-        })
-        .catch(err => {
-            console.log('todo action -> Cannot save todo', err)
-            throw err
-        })
+function _setTodosData(doneTodosPercent) {
+    store.dispatch({
+        type: SET_DONE_TODOS_PERCENT,
+        doneTodosPercent
+    })
 }

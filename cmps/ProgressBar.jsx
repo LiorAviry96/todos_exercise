@@ -9,7 +9,7 @@ export function ProgressBar() {
     const [numberOfDone, setNumberOfDone] = useState(0); // Initialize state to 0
     const todos = useSelector(storeState => storeState.todoModule.todos)
     const dispatch = useDispatch();
-    const style = useSelector(state => state.userModule.loggedInUser.prefs)
+    const style = useSelector(state => state.userModule.loggedInUser.pref)
 
 
 

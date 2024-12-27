@@ -20,6 +20,8 @@ window.cs = todoService
 function query(filterBy = {}) {
     return storageService.query(TODO_KEY)
         .then(todos => {
+           // console.log('todos1', todos)
+
             if (filterBy.txt) {
                 const regExp = new RegExp(filterBy.txt, 'i')
                 todos = todos.filter(todo => regExp.test(todo.txt))
@@ -28,18 +30,13 @@ function query(filterBy = {}) {
             if (filterBy.importance) {
                 todos = todos.filter(todo => todo.importance >= filterBy.importance)
             }
-            if (filterBy.status) {
-                    if(filterBy.status === "2" ){
-                        todos = todos.filter(todo => todo.isDone)
-                    }else if(filterBy.status === "3" ) {
-                        todos = todos.filter(todo => !todo.isDone)
-                    }else{
-                        todos = todos;
-                    }
+
+            if (filterBy.isDone !== 'all') {
+                todos = todos.filter((todo) => (filterBy.isDone === 'done' ? todo.isDone : !todo.isDone))
             }
             
-
-            return todos
+            //console.log('todos 2', todos)
+            return {todos}
         })
 }
 
@@ -70,18 +67,18 @@ function save(todo) {
 }
 
 function getEmptyTodo(txt = '', importance = 5) {
-    return { txt, importance, isDone: false , backgroundColor: '#f0f0f0'}
+    return { txt, importance, isDone: false }
 }
 
 function getDefaultFilter() {
-    return { txt: '', importance: 0, status: '1' }
+    return { txt: '', isDone: 'all',importance: 0}
 }
 
 function getFilterFromSearchParams(searchParams) {
-    const defaultFilter = getDefaultFilter()
-    const filterBy = {}
-    for (const field in defaultFilter) {
-        filterBy[field] = searchParams.get(field) || ''
+    const filterBy = {
+        txt: searchParams.get('txt') || '',
+        isDone: searchParams.get('isDone') || 'all',
+        importance: +searchParams.get('importance') || 0,
     }
     return filterBy
 }
